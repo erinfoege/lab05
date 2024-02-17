@@ -1,66 +1,91 @@
 #include <iostream>
+#include <vector>
+#include <string>
 #include "StringData.h"
 using namespace std;
-//Erin Foege and Marie Klinzing
 
-int BinarySearch(vector<string> data, int dataSize, int key)
+int BinarySearch(const vector<string>& data, int dataSize, const string& key)
 {
-    int mid;
-    int low;
-    int high;
+    int low = 0;
+    int high = dataSize - 1;
 
-    low = 0;
-    high = dataSize- 1;
-
-    while (high >= low) {
-        mid = (high + low) / 2;
-        if (data[mid] < key) {
-            low = mid + 1;
-        }
-        else if (data[mid] > key) {
-            high = mid - 1;
-        }
-        else {
+    while (high >= low)
+    {
+        int mid = low + (high - low) / 2;
+        int comparison = data[mid].compare(key);
+        if (comparison == 0)
+        {
             return mid;
         }
+        else if (comparison < 0)
+            low = mid + 1;
+        else
+            high = mid - 1;
     }
-
     return -1; // not found
 }
-int LinearSearch(vector<string> container, string element)
+int LinearSearch(const vector<string>& data, const string& key)
 {
-    for (int i = 0; i < 5; i++)
+    int index = 0;
+    for (const auto & i : data)
     {
-        cout << "hi";
-
+        if (i == key)
+        {
+            return index;
+        }
+        index++;
     }
+    return -1;
 }
 
 int main()
 {
-    bool run = true;
-    while (run)
-    {
-        vector<string> data= getStringData();
-        const int dataSize = data.size();
-        int i;
-        int key;
-        int keyIndex;
+    long long timeStart = 0;
+    long long timeEnd = 0;
+    vector<string> data = getStringData();
+    const int dataSize = int(data.size()) ;
+    string key;
+//    cout << "Enter a value to search : ";
+//    cin >> key;
+    key = "aaaaa";
+    timeStart = systemTimeNanoseconds();
+    int keyIndex = BinarySearch(data, dataSize, key);
+    timeEnd = systemTimeNanoseconds();
+    cout << "(Binary)'aaaaa' was at index: " << keyIndex << endl;
+    cout << timeEnd - timeStart << " was the nanoseconds it took " << endl;
 
-        cout << "Enter a value to search : ";
-        cin >> key;
+    timeStart = systemTimeNanoseconds();
+    keyIndex = LinearSearch(data, key);
+    timeEnd = systemTimeNanoseconds();
+    cout << "(Linear)'aaaaa' was at index: " << keyIndex << endl;
+    cout << timeEnd - timeStart << " was the nanoseconds it took " << endl;
 
-        keyIndex = BinarySearch(data, dataSize, key);
+    key = "mzzzz";
+    timeStart = systemTimeNanoseconds();
+    keyIndex = BinarySearch(data, dataSize, key);
+    timeEnd = systemTimeNanoseconds();
+    cout << "(Binary)'mzzzz' was at index: " << keyIndex << endl;
+    cout << timeEnd - timeStart << " was the nanoseconds it took " << endl;
 
-        if (keyIndex == -1)
-        {
-            cout << key << " was not found." << endl;
-        }
-        else
-        {
-            cout << "Found " << key << " at index " << keyIndex << "." << endl;
-        }
-    }
+    timeStart = systemTimeNanoseconds();
+    keyIndex = LinearSearch(data, key);
+    timeEnd = systemTimeNanoseconds();
+    cout << "(Linear)'mzzzz' was at index: " << keyIndex << endl;
+    cout << timeEnd - timeStart << " was the nanoseconds it took " << endl;
+
+    key = "not_here";
+    cout<< "(The index -1 indicates that the key is not within the data)" << endl;
+    timeStart = systemTimeNanoseconds();
+    keyIndex = BinarySearch(data, dataSize, key);
+    timeEnd = systemTimeNanoseconds();
+    cout << "(Binary)'not_here' was at index: " << keyIndex << endl;
+    cout << timeEnd - timeStart << " was the nanoseconds it took " << endl;
+
+    timeStart = systemTimeNanoseconds(); // Update timeStart here
+    keyIndex = LinearSearch(data, key);
+    timeEnd = systemTimeNanoseconds(); // Update timeEnd here
+    cout << "(Linear)'not_here' was at index: " << keyIndex << endl;
+    cout << timeEnd - timeStart << " was the nanoseconds it took " << endl;
 
     return 0;
 }
