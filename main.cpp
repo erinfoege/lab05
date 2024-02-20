@@ -2,13 +2,16 @@
 #include <vector>
 #include <string>
 #include "StringData.h"
+// Erin Foege and Marie Klinzing
 using namespace std;
 
 int BinarySearch(const vector<string>& data, int dataSize, const string& key)
 {
     int low = 0;
     int high = dataSize - 1;
-
+    //divide the code into 2 parts after every search looking for key
+    //requires the data to be sorted
+    //is quicker than the linear search
     while (high >= low)
     {
         int mid = low + (high - low) / 2;
@@ -27,6 +30,7 @@ int BinarySearch(const vector<string>& data, int dataSize, const string& key)
 int LinearSearch(const vector<string>& data, const string& key)
 {
     int index = 0;
+    //search every value in the list to see if the key is in it
     for (const auto & i : data)
     {
         if (i == key)
@@ -42,6 +46,7 @@ int main()
 {
     long long timeStart = 0;
     long long timeEnd = 0;
+    //using the code provided to generate all possible 5 letter combinations in the alphabet
     vector<string> data = getStringData();
     const int dataSize = int(data.size()) ;
     string key;
